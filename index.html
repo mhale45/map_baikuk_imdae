@@ -11,17 +11,6 @@
                 width: 100%;
                 height: 880px;
             }
-            h2 {
-                position: absolute; /* 📌 화면에서 절대 위치 */
-                top: 10px; /* 📌 위에서 10px 간격 */
-                left: 10px; /* 📌 왼쪽에서 10px 간격 */
-                background-color: rgba(255, 255, 255, 0.8); /* 📌 반투명 흰색 배경 */
-                padding: 8px 12px; /* 📌 내부 여백 */
-                border-radius: 6px; /* 📌 둥근 테두리 */
-                font-size: 30px; /* 📌 글자 크기 */
-                font-weight: bold; /* 📌 글자 굵기 */
-                z-index: 1000; /* 📌 지도보다 항상 위에 있도록 설정 */
-            }
             .info-window-one {
                 font-size: 13px !important; /* 🔹 글자 크기 설정 */
                 font-weight: 500 !important; /* 🔹 글자 굵게 설정 */
@@ -52,9 +41,9 @@
                 box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2) !important; /* 🔹 그림자 추가 */
             }
             /* 📌 버튼 스타일 */
-            #openInitialInfoWindows, #closeAllInfoWindows {
+            #openInitialInfoWindows, #closeAllInfoWindows, #toggleSearch {
                 position: absolute; 
-                left: 20px; 
+                right: 20px; 
                 padding: 10px 15px; 
                 border: none; 
                 border-radius: 5px; 
@@ -64,37 +53,46 @@
                 box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
                 z-index: 1000;
             }
+            /* 📌 "검색창" 버튼 (파란색) */
+            #toggleSearch {
+                bottom: 20px; 
+                background-color: #007bff;
+                color: white;
+            }
             /* 📌 "텍스트 열기" 버튼 (초록색) */
             #openInitialInfoWindows {
-                bottom: 60px; /* 닫기 버튼 위에 위치 */
+                bottom: 100px; /* 닫기 버튼 위에 위치 */
                 background-color: #4CAF50;
                 color: white;
             }
             /* 📌 "텍스트 닫기" 버튼 (빨간색) */
             #closeAllInfoWindows {
-                bottom: 20px; 
+                bottom: 60px; 
                 background-color: #ff5555;
                 color: white;
             }
             /* 검색창 스타일 */
             #search-container {
                 position: absolute;
-                top: 10px;
+                top: 60px;
                 right: 10px;
                 background: white;
                 padding: 8px;
                 border-radius: 5px;
                 box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
                 z-index: 1000;
+                display: none;
             }
             /* 검색 결과 스타일 */
             #searchResults {
-                max-height: 700px;  /* ✅ 검색 결과 최대 높이 */
                 overflow-y: auto;   /* ✅ 스크롤 가능하도록 설정 */
                 background: white;
                 padding: 8px;
                 border-radius: 5px;
                 box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+                resize: vertical; /* ✅ 마우스로 세로 크기 조절 가능 */
+                min-height: 10px; /* ✅ 최소 높이 제한 (사용자가 너무 작게 줄이지 못하도록) */
+                max-height: 500px; /* ✅ 최대 높이 제한 */
             }
             /* 검색 결과 버튼 스타일 */
             .search-result-item {
@@ -116,7 +114,7 @@
                 position: relative;
                 background: rgba(255, 255, 255, 0.7);
                 border-radius: 5px;
-                font-size: 13px;
+                font-size: 11px;
                 white-space: nowrap;
                 text-align: center;
                 border: none;  /* ✅ 테두리 제거 */
@@ -157,16 +155,17 @@
         
         <!-- 📌 지도 및 UI (비밀번호 입력 후 표시됨) -->
         <div id="map-container" style="display: none;">
-            <h2>임대차 지도</h2>
+            <h2></h2>
             <div id="map"></div>
             <!-- 📌 "텍스트 열기" 버튼 -->
             <button id="openInitialInfoWindows">텍스트 열기</button>
             <!-- 📌 "텍스트 닫기" 버튼 -->
             <button id="closeAllInfoWindows">텍스트 닫기</button>
+            <button id="toggleSearch">검색창</button>
             <!-- 📌 검색창 -->
             <div id="search-container" style="
                 position: absolute; 
-                top: 10px; 
+                top: 60px; 
                 right: 20px; 
                 background: white; 
                 padding: 10px; 
@@ -69366,6 +69365,14 @@
                                 setTimeout(() => message.remove(), 500);
                             }, 1500);
                         }
+                        document.getElementById("toggleSearch").addEventListener("click", function() {
+                            var searchContainer = document.getElementById("search-container");
+                            if (searchContainer.style.display === "none") {
+                                searchContainer.style.display = "block";
+                            } else {
+                                searchContainer.style.display = "none";
+                            }
+                        });
 
 
                     });
