@@ -847,7 +847,14 @@
                         function applyFilter(filterValues) {
                             console.log("필터링 진행...");
 
+                            let bounds = map.getBounds();  // ✅ 현재 지도 범위 가져오기
                             let matchingMarkers = []; // 필터 조건을 만족하는 마커 저장
+
+                            // ✅ 모든 인포윈도우 닫기 (필터 적용 전에 초기화)
+                            infoWindows.forEach((infoWindow, index) => {
+                                infoWindow.close();
+                                isOpenStates[index] = false;
+                            });
 
                             markers.forEach((marker, index) => {
                                 var deposit = parseFloat(df_naver_data[index]['보증금']) || 0;
@@ -864,30 +871,19 @@
                                     area >= filterValues.minArea && area <= filterValues.maxArea &&
                                     floor >= filterValues.minFloor && floor <= filterValues.maxFloor
                                 ) {
-                                    matchingMarkers.push(index); // 일치하는 마커의 인덱스를 저장
+                                    // ✅ 현재 지도 화면 안에 있는 마커인지 확인
+                                    if (bounds.contain(marker.getPosition())) {
+                                        matchingMarkers.push(index); // 필터 조건을 만족하고 화면 안에 있는 마커만 저장
+                                    }
                                 }
-                            });
-
-                            // ✅ 필터링된 마커들의 인포윈도우 자동 열기
-                            openFilteredInfoWindows(matchingMarkers);
-                        }
-
-                        // ✅ 필터링된 마커들의 인포윈도우를 여는 함수
-                        function openFilteredInfoWindows(matchingMarkers) {
-                            // ✅ 모든 인포윈도우 닫기
-                            infoWindows.forEach((infoWindow, index) => {
-                                infoWindow.close();
-                                overlays[index].setMap(null);
                             });
 
                             // ✅ 필터링된 마커들의 인포윈도우 열기
                             matchingMarkers.forEach(index => {
-                                infoWindows[index].open(map, markers[index]); // ✅ 인포윈도우 표시
-                                overlays[index].setMap(map); // ✅ 오버레이 표시
+                                infoWindows[index].open(map, markers[index]); // ✅ 필터 조건을 만족하는 인포윈도우 열기
+                                isOpenStates[index] = true;
                             });
-
                         }
-
 
 
                     });
