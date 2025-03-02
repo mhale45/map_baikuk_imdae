@@ -102,8 +102,11 @@
                 margin-bottom: 5px;
                 text-align: center;
             }
-            #minDepositInput, 
-            #maxDepositInput {
+            #minDepositInput, #maxDepositInput,
+            #minRentInput, #maxRentInput,
+            # minRightInput, # maxRightInput,
+            # minAreaInput, #maxAreaInput,
+            # minFloorInput, #maxFloorInput {
                 width: 120px;
                 padding: 5px;
                 margin: 5px 0;
@@ -206,6 +209,15 @@
                 <label id="deposit-label">월세</label>
                 <input type="number" id="minRentInput" placeholder="최소">
                 <input type="number" id="maxRentInput" placeholder="최대">
+                <label id="deposit-label">권리금</label>
+                <input type="number" id="minRightInput" placeholder="최소">
+                <input type="number" id="maxRightInput" placeholder="최대">
+                <label id="deposit-label">면적</label>
+                <input type="number" id="minAreaInput" placeholder="최소">
+                <input type="number" id="maxAreaInput" placeholder="최대">
+                <label id="deposit-label">층</label>
+                <input type="number" id="minFloorInput" placeholder="최소">
+                <input type="number" id="maxFloorInput" placeholder="최대">
             </div>
             <button id="applyDepositFilter">필터 적용</button> <!-- 📌 "텍스트 열기" 버튼 -->
             <button id="openInitialInfoWindows">텍스트 열기</button> <!-- 📌 "텍스트 열기" 버튼 -->
