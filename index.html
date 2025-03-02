@@ -813,6 +813,83 @@
                                 depositContainer.style.display = "none";
                             }
                         });
+                        document.getElementById("applyDepositFilter").addEventListener("click", function() {
+                            // 입력된 값을 가져와 변수에 저장
+                            var minDeposit = parseFloat(document.getElementById("minDepositInput").value) || 0;
+                            var maxDeposit = parseFloat(document.getElementById("maxDepositInput").value) || Infinity;
+                            var minRent = parseFloat(document.getElementById("minRentInput").value) || 0;
+                            var maxRent = parseFloat(document.getElementById("maxRentInput").value) || Infinity;
+                            var minRight = parseFloat(document.getElementById("minRightInput").value) || 0;
+                            var maxRight = parseFloat(document.getElementById("maxRightInput").value) || Infinity;
+                            var minArea = parseFloat(document.getElementById("minAreaInput").value) || 0;
+                            var maxArea = parseFloat(document.getElementById("maxAreaInput").value) || Infinity;
+                            var minFloor = parseFloat(document.getElementById("minFloorInput").value) || 0;
+                            var maxFloor = parseFloat(document.getElementById("maxFloorInput").value) || Infinity;
+
+                            // 필터 값을 객체에 저장 (추후 활용 가능)
+                            var filterValues = {
+                                minDeposit: minDeposit,
+                                maxDeposit: maxDeposit,
+                                minRent: minRent,
+                                maxRent: maxRent,
+                                minRight: minRight,
+                                maxRight: maxRight,
+                                minArea: minArea,
+                                maxArea: maxArea,
+                                minFloor: minFloor,
+                                maxFloor: maxFloor
+                            };
+                        });
+                        // ✅ 필터를 적용하는 함수
+                        function applyFilter(filterValues) {
+                            console.log("필터링 진행...");
+
+                            let matchingMarkers = []; // 필터 조건을 만족하는 마커 저장
+
+                            markers.forEach((marker, index) => {
+                                var deposit = parseFloat(df_naver_data[index]['보증금']) || 0;
+                                var rent = parseFloat(df_naver_data[index]['월세']) || 0;
+                                var right = parseFloat(df_naver_data[index]['권리금']) || 0;
+                                var area = parseFloat(df_naver_data[index]['면적']) || 0;
+                                var floor = parseFloat(df_naver_data[index]['층']) || 0;
+
+                                // ✅ 조건 비교 (모든 조건을 만족하는 마커만 필터링)
+                                if (
+                                    deposit >= filterValues.minDeposit && deposit <= filterValues.maxDeposit &&
+                                    rent >= filterValues.minRent && rent <= filterValues.maxRent &&
+                                    right >= filterValues.minRight && right <= filterValues.maxRight &&
+                                    area >= filterValues.minArea && area <= filterValues.maxArea &&
+                                    floor >= filterValues.minFloor && floor <= filterValues.maxFloor
+                                ) {
+                                    matchingMarkers.push(index); // 일치하는 마커의 인덱스를 저장
+                                }
+                            });
+
+                            console.log("필터 조건에 맞는 마커 개수:", matchingMarkers.length);
+
+                            // ✅ 필터링된 마커들의 인포윈도우 자동 열기
+                            openFilteredInfoWindows(matchingMarkers);
+                        }
+
+                        // ✅ 필터링된 마커들의 인포윈도우를 여는 함수
+                        function openFilteredInfoWindows(matchingMarkers) {
+                            // ✅ 모든 인포윈도우 닫기
+                            infoWindows.forEach((infoWindow, index) => {
+                                infoWindow.close();
+                                overlays[index].setMap(null);
+                            });
+
+                            // ✅ 필터링된 마커들의 인포윈도우 열기
+                            matchingMarkers.forEach(index => {
+                                infoWindows[index].open(map, markers[index]); // ✅ 인포윈도우 표시
+                                overlays[index].setMap(map); // ✅ 오버레이 표시
+                            });
+
+                            console.log("필터링된 마커의 인포윈도우가 열렸습니다.");
+                        }
+
+
+
                     });
                 } else {
                     console.error("❌ 카카오맵 API가 로드되지 않았습니다. API 키 또는 도메인 등록을 확인하세요.");
