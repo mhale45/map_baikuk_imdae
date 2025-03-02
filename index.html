@@ -14,15 +14,25 @@
             .info-window-one {
                 font-size: 13px !important; /* 🔹 글자 크기 설정 */
                 font-weight: 500 !important; /* 🔹 글자 굵게 설정 */
-                background-color: white !important; /* 🔹 배경 색상을 흰색으로 설정 */
+                background: rgba(255, 255, 255, 1); !important;
                 padding: 5px !important; /* 🔹 내부 여백 설정 */
-                border-radius: 5px !important; /* 🔹 박스 테두리를 둥글게 만듦 */
                 max-width: 600px !important; /* 🔹 최대 너비 설정 */
                 word-wrap: break-word !important; /* 🔹 긴 단어가 있으면 자동으로 줄바꿈 */
                 overflow-wrap: break-word !important; /* 🔹 공백이 없어도 강제 줄바꿈 */
                 overflow-x: auto !important; /* 🔹 가로 스크롤 */
                 white-space: nowrap !important; /* 🔹 자동 줄바꿈 방지 (공백이 있어도 줄바꿈되지 않음) */
                 text-align: left !important; /* 🔹 텍스트 정렬을 왼쪽으로 설정 */
+                pointer-events: none !important; /* 터치 및 클릭 비활성화 */
+                border-radius: 5px;
+                border: none !important; /* ✅ 테두리 제거 */
+                box-border: none !important; /* ✅ 테두리 제거 */
+                box-border: none !important; /* ✅ 그림자 제거 */
+                box-shadow: none !important; /* ✅ 그림자 제거 */
+            }
+            .info-window-one::after, .info-window-one::before{
+                content: none !important; /* ✅ 삼각형을 완전히 제거 */
+                display: none !important;
+                box-border: none !important; /* ✅ 그림자 제거 */
             }
             .info-window-many {
                 font-size: 14px !important; /* 🔹 글자 크기 설정 */
@@ -35,10 +45,31 @@
                 max-height: 600px !important; /* 🔹 최대 높이 설정 */
                 white-space: nowrap !important; /* 🔹 자동 줄바꿈 
                 overflow-x: auto !important; /* 🔹 가로 스크롤 제거 */
-                overflow-y: auto !important; /* 🔹 내용이 많으면 세로 스크롤 생성 */
-                
+                overflow-y: auto !important; /* 🔹 내용이 많으면 세로 스크롤 생성 */                
                 border: 3px solid black !important; /* 🔹 두께 3px, 검정색 테두리 */
                 box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2) !important; /* 🔹 그림자 추가 */
+            }
+            .custom-overlay {
+                position: absolute;
+                bottom: 1px; /* ✅ 오버레이 위치 조정 */
+                left: calc(50% + 60px);
+                transform: translateX(-50%);
+                background: rgba(255, 255, 255, 1);
+                border-radius: 5px;
+                font-size: 13px;
+                white-space: nowrap;
+                text-align: center;
+                border: 1px solid black !important;
+                user-select: text;
+                cursor: pointer;
+                box-shadow: none !important; /* ✅ 그림자 제거 */                
+                padding: 1px !important; /* 🔹 내부 여백 설정 */
+                font-weight: 500 !important; /* 🔹 글자 굵게 설정 */
+            }
+            .custom-overlay::after {
+                content: none !important; /* ✅ 삼각형 제거 */
+                display: none !important;
+                border: none !important; /* ✅ 테두리 제거 */
             }
             /* 📌 버튼 스타일 */
             #openInitialInfoWindows, #closeAllInfoWindows, #toggleSearch {
@@ -110,28 +141,7 @@
             .search-result-item:hover {
                 background: #0056b3;
             }
-            .custom-overlay {
-                position: relative;
-                background: rgba(255, 255, 255, 0.7);
-                border-radius: 5px;
-                font-size: 11px;
-                white-space: nowrap;
-                text-align: center;
-                border: none;  /* ✅ 테두리 제거 */
-                user-select: text; /* ✅ 텍스트 드래그 가능하도록 설정 */
-                cursor: pointer; /* 클릭 가능한 느낌을 주는 마우스 커서 */
-            }
 
-            /* 📌 아래쪽 삼각형 (말풍선 모양) */
-            .custom-overlay::after {
-                content: "";
-                position: absolute;
-                bottom: -10px;
-                left: 50%;
-                transform: translateX(-50%);
-                border-width: 10px;
-                border-color: rgba(255, 255, 255, 0.5) transparent transparent transparent; /*
-            }
         </style>
     </head>
     <body>
@@ -69251,7 +69261,6 @@
                                 if (bounds.contain(markers[i].getPosition())) {  // ✅ 현재 지도 범위 안에 있는 마커인지 확인
                                     if (initialOpenStates[i]) {
                                         infoWindows[i].open(map, markers[i]);  // ✅ 현재 보이는 마커만 열기
-                                        overlays[i].setMap(map);
                                         isOpenStates[i] = true;  
                                     }
                                 }
@@ -69301,12 +69310,16 @@
                                     button.addEventListener("click", function() {
                                         var marker = markers[result.index];
                                         var infoWindow = infoWindows[result.index];
+                                        var overlay = overlays[result.index];
 
                                         map.setCenter(marker.getPosition());
                                         map.setLevel(3); 
 
                                         infoWindows.forEach((iw) => iw.close()); // ✅ 모든 InfoWindow 닫기
+                                        overlays.forEach(ov => ov.setMap(null));
+
                                         infoWindow.open(map, marker); 
+                                        overlay.setMap(map);
 
                                     });
 
@@ -69373,7 +69386,6 @@
                                 searchContainer.style.display = "none";
                             }
                         });
-
 
                     });
                 } else {
