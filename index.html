@@ -807,6 +807,9 @@
                                 searchContainer.style.display = "none";
                             }
                         });
+                        document.addEventListener("DOMContentLoaded", function() {
+                            document.getElementById("filter-container").style.display = "none"; // 첫 로딩 시 숨김
+                        });
                         document.getElementById("filterSearch").addEventListener("click", function() {
                             var filterContainer = document.getElementById("filter-container");
                             if (filterContainer.style.display === "none") {
