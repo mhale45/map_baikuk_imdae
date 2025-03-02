@@ -229,12 +229,12 @@
                 <input type="number" id="maxFloorInput" placeholder="최대">
             </div>
             <button id="applyDepositFilter">필터 적용</button>
-            <button id="openInitialInfoWindows">텍스트 열기</button> <!-- 📌 "텍스트 열기" 버튼 -->
-            <button id="closeAllInfoWindows">텍스트 닫기</button> <!-- 📌 "텍스트 닫기" 버튼 -->
+            <button id="openInitialInfoWindows">텍스트 열기</button>
+            <button id="closeAllInfoWindows">텍스트 닫기</button>
             <button id="toggleSearch">검색창</button>
             <button id="filterSearch">필터창</button>
-            <!-- 📌 검색창 -->
-            <div id="search-container">
+            
+            <div id="search-container"> <!-- 📌 검색창 -->
                 <input type="text" id="searchInput" placeholder="검색어 입력" style="padding: 5px; width: 150px;">
                 <button id="searchButton" style="padding: 5px; cursor: pointer;">🔍 검색</button>
                 <div id="searchResults" style="margin-top: 5px;"></div>
@@ -802,10 +802,14 @@
                         });
                         document.getElementById("filterSearch").addEventListener("click", function() {
                             var filterContainer = document.getElementById("filter-container");
+                            var depositContainer = document.getElementById("applyDepositFilter");
+                            
                             if (filterContainer.style.display === "none") {
                                 filterContainer.style.display = "flex";
+                                depositContainer.style.display = "block";
                             } else {
                                 filterContainer.style.display = "none";
+                                depositContainer.style.display = "none";
                             }
                         });
                     });
