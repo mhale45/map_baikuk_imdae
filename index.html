@@ -807,6 +807,14 @@
                                 searchContainer.style.display = "none";
                             }
                         });
+                        document.getElementById("filterSearch").addEventListener("click", function() {
+                            var searchContainer = document.getElementById("filter-container");
+                            if (searchContainer.style.display === "none") {
+                                searchContainer.style.display = "block";
+                            } else {
+                                searchContainer.style.display = "none";
+                            }
+                        });
                     });
                 } else {
                     console.error("❌ 카카오맵 API가 로드되지 않았습니다. API 키 또는 도메인 등록을 확인하세요.");
