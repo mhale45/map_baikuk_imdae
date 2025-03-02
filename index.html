@@ -84,7 +84,7 @@
                 box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
                 z-index: 1000;
             }
-            #deposit-filter-container {
+            #filter-container {
                 position: absolute;
                 top: 100px;
                 right: 20px;
@@ -199,11 +199,13 @@
         <div id="map-container" style="display: none;">
             <h2></h2>
             <div id="map"></div>
-            <div id="deposit-filter-container">
+            <div id="filter-container">
                 <label id="deposit-label">보증금</label>
                 <input type="number" id="minDepositInput" placeholder="최소">
                 <input type="number" id="maxDepositInput" placeholder="최대">
-                <button id="applyDepositFilter">필터 적용</button>
+                <label id="deposit-label">월세</label>
+                <input type="number" id="minRentInput" placeholder="최소">
+                <input type="number" id="maxRentInput" placeholder="최대">
             </div>
             <button id="applyDepositFilter">필터 적용</button> <!-- 📌 "텍스트 열기" 버튼 -->
             <button id="openInitialInfoWindows">텍스트 열기</button> <!-- 📌 "텍스트 열기" 버튼 -->
