@@ -83,7 +83,7 @@
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
             z-index: 1000;
         }
-        #changeMapBaikuk, #changeMapNaver{
+        #changeMapBaikuk, #changeMapTotal, #changeMapNaver{
             position: absolute; 
             left: 20px; 
             padding: 8px 13px; 
@@ -142,17 +142,25 @@
             color: white;
             display: none;
         }
-        /* 📌 "지도전환" 버튼 (노란색) */
+        /* 📌 "백억" 버튼 (노란색) */
         #changeMapBaikuk {
-            bottom: 20px; 
+            bottom: 106px; 
             left: 20px;
             background-color: #f2c130;
             color: black;
             font-size: 16px;
         }
-        /* 📌 "지도전환" 버튼 (녹색) */
-        #changeMapNaver {
+        /* 📌 "통합" 버튼 (올리브) */
+        #changeMapTotal {
             bottom: 63px; 
+            left: 20px;
+            background-color: #92C340;
+            color: black;
+            font-size: 16px;
+        }
+        /* 📌 "광고" 버튼 (녹색) */
+        #changeMapNaver {
+            bottom: 20px; 
             left: 20px;
             background-color: #03C75A;
             color: black;
@@ -226,8 +234,9 @@
         <button id="openInitialInfoWindows">텍스트 열기</button>
         <button id="closeAllInfoWindows">텍스트 닫기</button>
         <button id="filterSearch">필터창</button>
-        <button id="changeMapBaikuk">백억지도</button>
-        <button id="changeMapNaver">통합지도</button>
+        <button id="changeMapTotal">통합</button>
+        <button id="changeMapBaikuk">백억</button>
+        <button id="changeMapNaver">광고</button>
 
     </div>
 
