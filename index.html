@@ -477,28 +477,32 @@
     function applyFilters() {
         closeAllInfoWindows(); // 모든 인포윈도우 닫기
 
-        // 🔹 입력된 필터 값 가져오기 (빈 값이면 기본값 설정)
-        let minDeposit = parseInt(document.getElementById("minDepositInput").value) || 0;
-        let maxDeposit = parseInt(document.getElementById("maxDepositInput").value) || 10000000000;
-        
-        let minRent = parseInt(document.getElementById("minRentInput").value) || 0;
-        let maxRent = parseInt(document.getElementById("maxRentInput").value) || 10000000000;
-        
-        let minRight = parseInt(document.getElementById("minRightInput").value) || 0;
-        let maxRight = parseInt(document.getElementById("maxRightInput").value) || 10000000000;
-        
-        let minArea = parseInt(document.getElementById("minAreaInput").value) || 0;
-        let maxArea = parseInt(document.getElementById("maxAreaInput").value) || 10000000000;
-        
-        let minFloor = parseInt(document.getElementById("minFloorInput").value) || 0;
-        let maxFloor = parseInt(document.getElementById("maxFloorInput").value) || 10000000000;
+        let githubRawBaseURL = "https://raw.githubusercontent.com/mhale45/map_baikuk_imdae/master/";
+        let jsonURL = githubRawBaseURL + currentData + "?t=" + new Date().getTime();
 
-        let detail1 = document.getElementById("detailContents").value.trim(); // 🔹 detailContents 값 가져오기
-
-        // ✅ 현재 선택된 JSON 데이터 (`df_bugisa.json` 또는 `df_naver.json`)를 가져옴
-        fetch(`http://localhost:8000/${currentData}`)
-            .then(response => response.json())
+        fetch(jsonURL)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`❌ JSON 데이터를 불러오는 중 오류 발생 (${response.status} ${response.statusText})`);
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log("✅ 필터 적용 전 데이터 개수:", data.length);
+
+                // 필터 값 가져오기
+                let minDeposit = parseInt(document.getElementById("minDepositInput").value) || 0;
+                let maxDeposit = parseInt(document.getElementById("maxDepositInput").value) || 10000000000;
+                let minRent = parseInt(document.getElementById("minRentInput").value) || 0;
+                let maxRent = parseInt(document.getElementById("maxRentInput").value) || 10000000000;
+                let minRight = parseInt(document.getElementById("minRightInput").value) || 0;
+                let maxRight = parseInt(document.getElementById("maxRightInput").value) || 10000000000;
+                let minArea = parseInt(document.getElementById("minAreaInput").value) || 0;
+                let maxArea = parseInt(document.getElementById("maxAreaInput").value) || 10000000000;
+                let minFloor = parseInt(document.getElementById("minFloorInput").value) || 0;
+                let maxFloor = parseInt(document.getElementById("maxFloorInput").value) || 10000000000;
+                let detail1 = document.getElementById("detailContents").value.trim();
+
                 // ✅ 필터 적용: 모든 조건을 만족하는 데이터만 필터링
                 let filteredData = data.filter(row => {
                     let deposit = parseInt(row.보증금) || 0;
@@ -508,7 +512,6 @@
                     let floor = parseInt(row.층) || 0;
                     let detailContent = row.세부내용 ? row.세부내용.toString() : "";
 
-                    // ✅ detailContents이 입력된 경우, 해당 값이 '세부내용'에 포함된 데이터만 필터링
                     let matchesDetail1 = detail1 === "" || detailContent.includes(detail1);
 
                     return (
@@ -517,11 +520,11 @@
                         right >= minRight && right <= maxRight &&
                         area >= minArea && area <= maxArea &&
                         floor >= minFloor && floor <= maxFloor &&
-                        matchesDetail1 // ✅ detailContents 필터 적용
+                        matchesDetail1
                     );
                 });
 
-                console.log("✅ 필터링된 데이터 (현재 선택된 지도 기준):", filteredData);
+                console.log("✅ 필터 적용 후 데이터 개수:", filteredData.length);
 
                 // ✅ 기존 마커 삭제
                 clearMarkers();
@@ -530,8 +533,12 @@
                 let groupedData = groupByAddress(filteredData);
                 addMarkers(groupedData);
             })
-            .catch(error => console.error('❌ 필터 적용 중 오류 발생:', error));
+            .catch(error => {
+                console.error('❌ 필터 적용 중 오류 발생:', error);
+                alert("❌ 데이터를 불러오는 데 실패했습니다. URL을 확인하세요.");
+            });
     }
+
 
 
 
