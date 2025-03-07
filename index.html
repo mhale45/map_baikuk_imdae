@@ -298,7 +298,7 @@
     function loadMarkers(jsonFile) {
         // ✅ GitHub의 raw 파일 URL을 사용해야 함!
         let githubRawBaseURL = "https://raw.githubusercontent.com/mhale45/map_baikuk_imdae/master/";
-        let jsonURL = githubRawBaseURL + jsonFile;
+        let jsonURL = githubRawBaseURL + jsonFile + "?t=" + new Date().getTime();
 
         fetch(jsonURL)
             .then(response => {
