@@ -296,12 +296,9 @@
     }
 
     function loadMarkers(jsonFile) {
-        // ✅ 깃허브에서 JSON 파일 가져오기
-        let githubRawBaseURL = "https://github.com/mhale45/map_baikuk_imdae";
-
-        let timestamp = new Date().getTime(); // 현재 시간 추가
-        let jsonURL = githubRawBaseURL + jsonFile + "?t=" + timestamp;
-
+        // ✅ GitHub의 raw 파일 URL을 사용해야 함!
+        let githubRawBaseURL = "https://raw.githubusercontent.com/mhale45/map_baikuk_imdae/main/";
+        let jsonURL = githubRawBaseURL + jsonFile;
 
         fetch(jsonURL)
             .then(response => {
