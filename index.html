@@ -296,24 +296,49 @@
     }
 
     function loadMarkers(jsonFile) {
-        // ✅ GitHub의 raw 파일 URL을 사용해야 함!
+        closeAllInfoWindows(); // 모든 인포윈도우 닫기
+
         let githubRawBaseURL = "https://raw.githubusercontent.com/mhale45/map_baikuk_imdae/master/";
-        let jsonURL = githubRawBaseURL + jsonFile + "?t=" + new Date().getTime();
+        let jsonURL = githubRawBaseURL + currentData + "?t=" + new Date().getTime();
 
         fetch(jsonURL)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error("❌ JSON 데이터를 가져오는 중 오류 발생");
+                    throw new Error(`❌ JSON 데이터를 불러오는 중 오류 발생 (${response.status} ${response.statusText})`);
                 }
                 return response.json();
             })
             .then(data => {
-                console.log("📌 불러온 데이터:", data);
+                console.log("✅ 필터 적용 전 데이터 개수:", data.length);
+
+                // 필터 값 가져오기
+                let minDeposit = parseInt(document.getElementById("minDepositInput").value) || 0;
+                let maxDeposit = parseInt(document.getElementById("maxDepositInput").value) || 10000000000;
+                let minRent = parseInt(document.getElementById("minRentInput").value) || 0;
+                let maxRent = parseInt(document.getElementById("maxRentInput").value) || 10000000000;
+
+                let filteredData = data.filter(row => {
+                    let deposit = parseInt(row.보증금) || 0;
+                    let rent = parseInt(row.월세) || 0;
+                    return (
+                        deposit >= minDeposit && deposit <= maxDeposit &&
+                        rent >= minRent && rent <= maxRent
+                    );
+                });
+
+                console.log("✅ 필터 적용 후 데이터 개수:", filteredData.length);
+
+                // ✅ 기존 마커 삭제
                 clearMarkers();
-                let groupedData = groupByAddress(data);
+
+                // ✅ 필터링된 데이터를 '대표주소' 기준으로 그룹화 후 마커 추가
+                let groupedData = groupByAddress(filteredData);
                 addMarkers(groupedData);
             })
-            .catch(error => console.error('❌ JSON 데이터 로드 실패:', error));
+            .catch(error => {
+                console.error('❌ 필터 적용 중 오류 발생:', error);
+                alert("❌ 데이터를 불러오는 데 실패했습니다. URL을 확인하세요.");
+            });
     }
 
     function groupByAddress(data) {
