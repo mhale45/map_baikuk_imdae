@@ -296,8 +296,20 @@
     }
 
     function loadMarkers(jsonFile) {
-        fetch(`http://localhost:8000/${jsonFile}`)
-            .then(response => response.json())
+        // ✅ 깃허브에서 JSON 파일 가져오기
+        let githubRawBaseURL = "https://github.com/mhale45/map_baikuk_imdae";
+
+        let timestamp = new Date().getTime(); // 현재 시간 추가
+        let jsonURL = githubRawBaseURL + jsonFile + "?t=" + timestamp;
+
+
+        fetch(jsonURL)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("❌ JSON 데이터를 가져오는 중 오류 발생");
+                }
+                return response.json();
+            })
             .then(data => {
                 console.log("📌 불러온 데이터:", data);
                 clearMarkers();
@@ -514,6 +526,7 @@
     document.getElementById("changeMapNaver").addEventListener("click", function () {
         closeAllInfoWindows(); // 모든 인포윈도우 닫기
         currentData = "df_naver.json"; // ✅ 새로운 데이터 변경
+        setCurrentData(currentData); // ✅ 로컬 저장
         loadMarkers(currentData);      // ✅ 지도에 새로운 데이터 적용
     });
 
@@ -521,6 +534,7 @@
     document.getElementById("changeMapBaikuk").addEventListener("click", function () {
         closeAllInfoWindows(); // 모든 인포윈도우 닫기
         currentData = "df_bugisa.json"; // ✅ 새로운 데이터 변경
+        setCurrentData(currentData); // ✅ 로컬 저장
         loadMarkers(currentData);      // ✅ 지도에 새로운 데이터 적용
     });
 
