@@ -307,8 +307,9 @@
     function loadMarkers(jsonFile) {
         closeAllInfoWindows(); // 모든 인포윈도우 닫기
 
-        let githubRawBaseURL = "https://raw.githubusercontent.com/mhale45/map_baikuk_imdae/master/";
-        let jsonURL = githubRawBaseURL + currentData + "?t=" + new Date().getTime();
+        // let githubRawBaseURL = "https://raw.githubusercontent.com/mhale45/map_baikuk_imdae/master/";
+        // let jsonURL = githubRawBaseURL + currentData + "?t=" + new Date().getTime();
+        let jsonURL = currentData + "?t=" + new Date().getTime();
 
         fetch(jsonURL)
             .then(response => {
@@ -403,12 +404,15 @@
 
             // ✅ 'df_naver.json'이 로드되었을 때 info-window-one의 이미지 변경
             let markerImageURL;
+            
             if (isMerged) {
                 markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/5-1.png"; // info-window-many
+            } else if (currentData === "df_total.json") {
+                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/2-2.png";
+            } else if (currentData === "df_naver.json") {
+                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/2-1.png";
             } else {
-                markerImageURL = (currentData === "df_naver.json") ?
-                    "https://raw.githubusercontent.com/mhale45/image/main/2-1.png" :  // ✅ df_naver.json 사용 시 변경된 이미지
-                    "https://raw.githubusercontent.com/mhale45/image/main/2.png";    // ✅ 기본 df_bugisa.json 사용 시 원래 이미지
+                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/2.png";
             }
 
             let markerImage = new kakao.maps.MarkerImage(markerImageURL, imageSize);
@@ -486,8 +490,10 @@
     function applyFilters() {
         closeAllInfoWindows(); // 모든 인포윈도우 닫기
 
-        let githubRawBaseURL = "https://raw.githubusercontent.com/mhale45/map_baikuk_imdae/master/";
-        let jsonURL = githubRawBaseURL + currentData + "?t=" + new Date().getTime();
+        // let githubRawBaseURL = "https://raw.githubusercontent.com/mhale45/map_baikuk_imdae/master/";
+        // let jsonURL = githubRawBaseURL + currentData + "?t=" + new Date().getTime();
+        let jsonURL = currentData + "?t=" + new Date().getTime();
+
 
         fetch(jsonURL)
             .then(response => {
@@ -560,18 +566,26 @@
     // 📌 '텍스트 닫기' 버튼 클릭 이벤트 추가
     document.getElementById("closeAllInfoWindows").addEventListener("click", closeAllInfoWindows);
 
-    // 📌 '통합지도' 버튼 클릭 이벤트 추가 (df_naver.json 불러오기)
-    document.getElementById("changeMapNaver").addEventListener("click", function () {
+    // 📌 '백억지도' 버튼 클릭 이벤트 추가 (df_bugisa.json 불러오기)
+    document.getElementById("changeMapBaikuk").addEventListener("click", function () {
         closeAllInfoWindows(); // 모든 인포윈도우 닫기
-        currentData = "df_naver.json"; // ✅ 새로운 데이터 변경
+        currentData = "df_bugisa.json"; // ✅ 새로운 데이터 변경
         setCurrentData(currentData); // ✅ 로컬 저장
         loadMarkers(currentData);      // ✅ 지도에 새로운 데이터 적용
     });
 
-    // 📌 '백억지도' 버튼 클릭 이벤트 추가 (df_naver.json 불러오기)
-    document.getElementById("changeMapBaikuk").addEventListener("click", function () {
+    // 📌 '통합지도' 버튼 클릭 이벤트 추가 (df_total.json 불러오기)
+    document.getElementById("changeMapTotal").addEventListener("click", function () {
         closeAllInfoWindows(); // 모든 인포윈도우 닫기
-        currentData = "df_bugisa.json"; // ✅ 새로운 데이터 변경
+        currentData = "df_total.json"; // ✅ 새로운 데이터 변경
+        setCurrentData(currentData); // ✅ 로컬 저장
+        loadMarkers(currentData);      // ✅ 지도에 새로운 데이터 적용
+    });
+    
+    // 📌 '광고지도' 버튼 클릭 이벤트 추가 (df_naver.json 불러오기)
+    document.getElementById("changeMapNaver").addEventListener("click", function () {
+        closeAllInfoWindows(); // 모든 인포윈도우 닫기
+        currentData = "df_naver.json"; // ✅ 새로운 데이터 변경
         setCurrentData(currentData); // ✅ 로컬 저장
         loadMarkers(currentData);      // ✅ 지도에 새로운 데이터 적용
     });
@@ -632,7 +646,7 @@
     // ✅ 초기 지도 로드
     window.onload = function() {
         let savedData = localStorage.getItem("currentData") || "df_bugisa.json";
-        setCurrentData(savedData);
+        setCurrentData("df_bugisa.json");
         initMap();
     };
 </script>
