@@ -405,14 +405,17 @@
             // ✅ 'df_naver.json'이 로드되었을 때 info-window-one의 이미지 변경
             let markerImageURL;
             
-            if (isMerged) {
-                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/5-1.png"; // info-window-many
+            // ✅ 'df_naver.json'인 경우, '상위작업' 값 체크
+            if (currentData === "df_naver.json" && item.상위작업 === 1) {
+                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/1.png"; // ✅ '상위작업'이 1이면 '1.png'
+            } else if (isMerged) {
+                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/5-1.png"; // ✅ 여러 줄인 경우 '5-1.png'
             } else if (currentData === "df_total.json") {
-                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/2-2.png";
+                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/2-2.png"; // ✅ '통합' 모드
             } else if (currentData === "df_naver.json") {
-                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/2-1.png";
+                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/2-1.png"; // ✅ '광고' 모드 (상위작업 0일 때)
             } else {
-                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/2.png";
+                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/2.png"; // ✅ '백억' 모드
             }
 
             let markerImage = new kakao.maps.MarkerImage(markerImageURL, imageSize);
