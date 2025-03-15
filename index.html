@@ -411,6 +411,7 @@
 
             // ✅ 'df_naver.json'인 경우, '상위작업' 값 체크
             if (
+                isMerged &&
                 currentData === "df_naver.json" && 
                 (item.상위작업 == 1) && 
                 item.지도내용 && item.지도내용.includes("백억") // ✅ 지도내용이 undefined/null이 아닐 때만 검사
