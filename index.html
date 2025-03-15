@@ -406,8 +406,12 @@
             let markerImageURL;
             
             // ✅ 'df_naver.json'인 경우, '상위작업' 값 체크
-            if (currentData === "df_naver.json" && (item.상위작업 === 1 || item.상위작업 === "1")) {
-                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/1.png"; // ✅ '상위작업'이 1이면 '1.png'
+            if (
+                currentData === "df_naver.json" && 
+                (item.상위작업 === 1 || item.상위작업 === "1") && 
+                item.지도내용.includes("백억") // ✅ '지도내용'에 '백억' 포함 조건 추가
+            ) {
+                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/1-1.png"; // ✅ '상위작업'이 1이면 '1.png'
             } else if (isMerged) {
                 markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/5-1.png"; // ✅ 여러 줄인 경우 '5-1.png'
             } else if (currentData === "df_total.json") {
