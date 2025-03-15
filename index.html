@@ -300,7 +300,7 @@
         let container = document.getElementById('map');
         let options = { center: centerPosition, level: 3 };
         map = new kakao.maps.Map(container, options);
-
+        
         loadMarkers(currentData);
     }
 
@@ -405,14 +405,26 @@
             // ✅ 'df_naver.json'이 로드되었을 때 info-window-one의 이미지 변경
             let markerImageURL;
             
-            if (isMerged) {
-                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/5-1.png"; // info-window-many
+            console.log("현재 데이터 파일:", currentData);
+            console.log("상위작업 값:", item.상위작업, "타입:", typeof item.상위작업);
+            console.log("지도내용:", item.지도내용);
+
+            // ✅ 'df_naver.json'인 경우, '상위작업' 값 체크
+            if (
+                isMerged &&
+                currentData === "df_naver.json" && 
+                (item.상위작업 == 1) && 
+                item.지도내용 && item.지도내용.includes("백억") // ✅ 지도내용이 undefined/null이 아닐 때만 검사
+            ) {
+                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/1-1.png";
+            } else if (isMerged) {
+                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/5-1.png"; // ✅ 여러 줄인 경우 '5-1.png'
             } else if (currentData === "df_total.json") {
-                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/2-2.png";
+                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/2-2.png"; // ✅ '통합' 모드
             } else if (currentData === "df_naver.json") {
-                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/2-1.png";
+                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/2-1.png"; // ✅ '광고' 모드 (상위작업 0일 때)
             } else {
-                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/2.png";
+                markerImageURL = "https://raw.githubusercontent.com/mhale45/image/main/2.png"; // ✅ '백억' 모드
             }
 
             let markerImage = new kakao.maps.MarkerImage(markerImageURL, imageSize);
@@ -571,6 +583,7 @@
         closeAllInfoWindows(); // 모든 인포윈도우 닫기
         currentData = "df_bugisa.json"; // ✅ 새로운 데이터 변경
         setCurrentData(currentData); // ✅ 로컬 저장
+        clearMarkers(); // ✅ 기존 마커 삭제
         loadMarkers(currentData);      // ✅ 지도에 새로운 데이터 적용
     });
 
@@ -579,6 +592,7 @@
         closeAllInfoWindows(); // 모든 인포윈도우 닫기
         currentData = "df_total.json"; // ✅ 새로운 데이터 변경
         setCurrentData(currentData); // ✅ 로컬 저장
+        clearMarkers(); // ✅ 기존 마커 삭제
         loadMarkers(currentData);      // ✅ 지도에 새로운 데이터 적용
     });
     
@@ -587,6 +601,7 @@
         closeAllInfoWindows(); // 모든 인포윈도우 닫기
         currentData = "df_naver.json"; // ✅ 새로운 데이터 변경
         setCurrentData(currentData); // ✅ 로컬 저장
+        clearMarkers(); // ✅ 기존 마커 삭제
         loadMarkers(currentData);      // ✅ 지도에 새로운 데이터 적용
     });
 
