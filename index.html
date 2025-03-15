@@ -361,10 +361,17 @@
                     대표주소: row.대표주소,
                     위도: row.위도,
                     경도: row.경도,
-                    지도내용: []
+                    지도내용: [],
+                    상위작업: 0  // 기본값은 0으로 설정
                 };
             }
+
             grouped[key].지도내용.push(row.지도내용);
+
+            // ✅ 상위작업이 1인 항목이 있으면 1로 설정
+            if (row.상위작업 == 1 || row.상위작업 === "1") {
+                grouped[key].상위작업 = 1;
+            }
         });
 
         return Object.values(grouped).map(entry => {
@@ -372,7 +379,6 @@
             return entry;
         });
     }
-
 
     function formatGroupedContent(contents) {
         if (contents.length === 0) return "";
