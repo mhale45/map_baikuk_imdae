@@ -14,13 +14,14 @@
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(0, 0, 0, 0.7); /* 반투명 검은색 배경 */
+            background: rgba(0, 0, 0, 0.2); /* 반투명 검은색 배경 */
             color: white; /* 텍스트 색상 */
             padding: 15px 20px;
             border-radius: 10px; /* 둥근 모서리 */
             font-size: 16px;
             width: 250px;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
+            z-index: 1000; /* ✅ 지도보다 위에 표시되도록 설정 */
         }
         .info-window-one {
             font-size: 13px !important; /* 🔹 글자 크기 설정 */
