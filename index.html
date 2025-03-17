@@ -115,6 +115,18 @@
             margin-bottom: 5px;
             text-align: center;
         }
+        #display-bugisa-all {
+            font-size: 16px;
+            position: absolute;
+            left: 20px; 
+            bottom: 140px; 
+            background: white; 
+            padding: 5px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            z-index: 1000;
+        }
         #minDepositInput, #maxDepositInput,
         #minRentInput, #maxRentInput,
         #minRightInput, #maxRightInput,
@@ -228,9 +240,6 @@
             <input type="number" id="maxFloorInput" placeholder="최대">
             <label id="filter-label">세부내용</label>
             <input type="text" id="detailContents" placeholder="">
-            <label id="progressLabel" style="position: absolute; left: 20px; bottom: 140px; background: white; padding: 5px; border-radius: 5px; font-weight: bold; cursor: pointer; z-index: 1000;">
-                진행중 <input type="checkbox" id="progressCheckbox" checked>
-            </label>
         </div>
         <button id="filterClear">필터 초기화</button>
         <button id="applyDepositFilter">필터 적용</button>
@@ -239,6 +248,9 @@
         <button id="filterSearch">필터창</button>
         <button id="changeMapTotal">통합</button>
         <button id="changeMapBaikuk">백억</button>
+        <label id="display-bugisa-all"> 
+            진행중 <input type="checkbox" id="progressCheckbox" checked>
+        </label>
         <button id="changeMapNaver">광고</button>
 
     </div>
