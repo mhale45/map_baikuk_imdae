@@ -10,6 +10,18 @@
             width: 100%;
             height: 880px;
         }
+        .textbox {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7); /* 반투명 검은색 배경 */
+            color: white; /* 텍스트 색상 */
+            padding: 15px 20px;
+            border-radius: 10px; /* 둥근 모서리 */
+            font-size: 16px;
+            width: 250px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
+        }
         .info-window-one {
             font-size: 13px !important; /* 🔹 글자 크기 설정 */
             font-weight: 500 !important; /* 🔹 글자 굵게 설정 */
@@ -223,6 +235,7 @@
     <div id="map-container" style="display: none;">
     <h2></h2>
     <div id="map"></div>
+        <div class="textbox"></div>
         <div id="filter-container">
             <label id="filter-label">보증금</label>
             <input type="number" id="minDepositInput" placeholder="최소">
@@ -253,12 +266,29 @@
             진행중 <input type="checkbox" id="progressCheckbox" checked style="margin-left: 3px;">
         </label>
         <button id="changeMapNaver">광고</button>
-
     </div>
 
 </body>
 </html>
 <script>
+    async function getCellValue() {
+        const sheetURL = "https://docs.google.com/spreadsheets/d/e/100p__XPZgk7XQpeM7KHZUX64jEWGZ44bxUoOqNA4L-4/pub?output=csv";
+        const response = await fetch(sheetURL);
+        const text = await response.text();
+        
+        // CSV 데이터를 배열로 변환
+        const rows = text.split("\n").map(row => row.split(","));
+
+        // 특정 셀 (A1) 데이터 가져오기
+        const cellValue = rows[0][0]; // A1은 첫 번째 행(인덱스 0)의 첫 번째 열(인덱스 0)
+
+        // 📌 'textbox' div에 업데이트 정보 표시
+        document.querySelector(".textbox").innerText = cellValue;
+    }
+
+    // 📌 업데이트 정보 불러오기 실행
+    getCellValue();
+
     let map;
     let markers = [];
     let overlays = [];
