@@ -625,7 +625,7 @@
 
                 // ✅ '광고' 모드(df_naver.json)일 때 다른 링크로 연결
                 if (currentData === "df_naver.json") {
-                    searchURL = `https://new.land.naver.com/offices?ms=${latitude},${longitude},18&a=SG:SMS:GJCG:APTHGJ:GM:TJ&b=B2&e=RETAIL&ad=true`;
+                    searchURL = `https://new.land.naver.com/offices?ms=${latitude},${longitude},19&a=SG:SMS:GJCG:APTHGJ:GM:TJ&b=B2&e=RETAIL&ad=true`;
                 } else {
                     let encodedQuery = encodeURIComponent(clickedAddress); // URL 인코딩
                     searchURL = `https://map.naver.com/v5/search/${encodedQuery}`; // 네이버 지도 검색 URL
