@@ -228,6 +228,9 @@
             <input type="number" id="maxFloorInput" placeholder="최대">
             <label id="filter-label">세부내용</label>
             <input type="text" id="detailContents" placeholder="">
+            <label id="progressLabel" style="position: absolute; left: 20px; bottom: 140px; background: white; padding: 5px; border-radius: 5px; font-weight: bold; cursor: pointer; z-index: 1000;">
+                진행중 <input type="checkbox" id="progressCheckbox" checked>
+            </label>
         </div>
         <button id="filterClear">필터 초기화</button>
         <button id="applyDepositFilter">필터 적용</button>
@@ -669,6 +672,16 @@
         document.getElementById("minFloorInput").value = "";
         document.getElementById("maxFloorInput").value = "";
         document.getElementById("detailContents").value = "";
+    });
+
+    // 📌 '백억' 버튼 클릭 이벤트 수정 (체크박스 상태에 따라 JSON 선택)
+    document.getElementById("changeMapBaikuk").addEventListener("click", function () {
+        closeAllInfoWindows(); // 모든 인포윈도우 닫기
+        let isChecked = document.getElementById("progressCheckbox").checked;
+        currentData = isChecked ? "df_bugisa.json" : "df_bugisa_all.json"; // ✅ 체크 상태에 따라 변경
+        setCurrentData(currentData); // ✅ 로컬 저장
+        clearMarkers(); // ✅ 기존 마커 삭제
+        loadMarkers(currentData); // ✅ 지도에 새로운 데이터 적용
     });
 
     // ✅ 초기 지도 로드
