@@ -115,18 +115,6 @@
             margin-bottom: 5px;
             text-align: center;
         }
-        #display-bugisa-all {
-            font-size: 13px;
-            position: absolute;
-            left: 20px; 
-            bottom: 155px; 
-            background: #f2c130; 
-            padding: 5px; 
-            border-radius: 5px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            z-index: 1000;
-        }
         #minDepositInput, #maxDepositInput,
         #minRentInput, #maxRentInput,
         #minRightInput, #maxRightInput,
@@ -161,6 +149,18 @@
             background-color: #f2c130;
             color: black;
             font-size: 16px;
+        }
+        #display-bugisa-all {
+            font-size: 13px;
+            position: absolute;
+            left: 20px; 
+            bottom: 155px; 
+            background: #f2c130; 
+            padding: 5px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            z-index: 1000;
         }
         /* 📌 "통합" 버튼 (올리브) */
         #changeMapTotal {
@@ -247,10 +247,13 @@
         <button id="closeAllInfoWindows">텍스트 닫기</button>
         <button id="filterSearch">필터창</button>
         <button id="changeMapTotal">통합</button>
-        <button id="changeMapBaikuk">백억</button>
-        <label id="display-bugisa-all"> 
-            진행중 <input type="checkbox" id="progressCheckbox" checked>
-        </label>
+        <!-- 📌 '백억' 버튼 (진행중 체크박스 포함) -->
+        <button id="changeMapBaikuk">
+            백억
+            <label id="progressLabel" style="margin-left: 8px; font-size: 13px; display: flex; align-items: center;">
+                진행중 <input type="checkbox" id="progressCheckbox" checked style="margin-left: 3px;">
+            </label>
+        </button>
         <button id="changeMapNaver">광고</button>
 
     </div>
@@ -597,7 +600,8 @@
     // 📌 '백억지도' 버튼 클릭 이벤트 추가 (df_bugisa.json 불러오기)
     document.getElementById("changeMapBaikuk").addEventListener("click", function () {
         closeAllInfoWindows(); // 모든 인포윈도우 닫기
-        currentData = "df_bugisa.json"; // ✅ 새로운 데이터 변경
+        let isChecked = document.getElementById("progressCheckbox").checked;
+        currentData = isChecked ? "df_bugisa.json" : "df_bugisa_all.json"; // ✅ 체크 상태에 따라 변경
         setCurrentData(currentData); // ✅ 로컬 저장
         clearMarkers(); // ✅ 기존 마커 삭제
         loadMarkers(currentData);      // ✅ 지도에 새로운 데이터 적용
@@ -684,16 +688,6 @@
         document.getElementById("minFloorInput").value = "";
         document.getElementById("maxFloorInput").value = "";
         document.getElementById("detailContents").value = "";
-    });
-
-    // 📌 '백억' 버튼 클릭 이벤트 수정 (체크박스 상태에 따라 JSON 선택)
-    document.getElementById("changeMapBaikuk").addEventListener("click", function () {
-        closeAllInfoWindows(); // 모든 인포윈도우 닫기
-        let isChecked = document.getElementById("progressCheckbox").checked;
-        currentData = isChecked ? "df_bugisa.json" : "df_bugisa_all.json"; // ✅ 체크 상태에 따라 변경
-        setCurrentData(currentData); // ✅ 로컬 저장
-        clearMarkers(); // ✅ 기존 마커 삭제
-        loadMarkers(currentData); // ✅ 지도에 새로운 데이터 적용
     });
 
     // ✅ 초기 지도 로드
