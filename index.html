@@ -144,23 +144,19 @@
         }
         /* 📌 "백억" 버튼 (노란색) */
         #changeMapBaikuk {
-            bottom: 106px; 
+            bottom: 20px; 
             left: 20px;
             background-color: #f2c130;
             color: black;
             font-size: 16px;
         }
+        /* 📌 "진행중" (노란색) */
         #display-bugisa-all {
-            font-size: 13px;
-            position: absolute;
-            left: 20px; 
-            bottom: 155px; 
-            background: #f2c130; 
-            padding: 5px; 
-            border-radius: 5px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            z-index: 1000;
+            bottom: 20px; 
+            left: 70px; 
+            font-size: 15px;
+            background-color: #f2c130;
+            color: black;
         }
         /* 📌 "통합" 버튼 (올리브) */
         #changeMapTotal {
@@ -172,7 +168,7 @@
         }
         /* 📌 "광고" 버튼 (녹색) */
         #changeMapNaver {
-            bottom: 20px; 
+            bottom: 106px; 
             left: 20px;
             background-color: #03C75A;
             color: black;
@@ -247,13 +243,10 @@
         <button id="closeAllInfoWindows">텍스트 닫기</button>
         <button id="filterSearch">필터창</button>
         <button id="changeMapTotal">통합</button>
-        <!-- 📌 '백억' 버튼 (진행중 체크박스 포함) -->
-        <button id="changeMapBaikuk">
-            백억
-            <label id="progressLabel" style="margin-left: 8px; font-size: 13px; display: flex; align-items: center;">
-                진행중 <input type="checkbox" id="progressCheckbox" checked style="margin-left: 3px;">
-            </label>
-        </button>
+        <button id="changeMapBaikuk">백억</button>
+        <label id="display-bugisa-all">
+            진행중 <input type="checkbox" id="progressCheckbox" checked style="margin-left: 3px;">
+        </label>
         <button id="changeMapNaver">광고</button>
 
     </div>
