@@ -273,41 +273,18 @@
 </html>
 <script>
     async function getCellValue() {
-        try {
-            const sheetURL = "https://docs.google.com/spreadsheets/d/1f1urapy7S5buKKuHxgaVAc4ZbjndZvfCsiovAwwkB4g/gviz/tq?tqx=out:csv"; // ✅ 올바른 CSV URL
-            const response = await fetch(sheetURL);
+        const sheetURL = "https://docs.google.com/spreadsheets/d/1f1urapy7S5buKKuHxgaVAc4ZbjndZvfCsiovAwwkB4g/gviz/tq?tqx=out:csv"; // ✅ 올바른 CSV URL
+        const response = await fetch(sheetURL);
+        const text = await response.text();
+        
+        // CSV 데이터를 배열로 변환
+        const rows = text.split("\n").map(row => row.split(","));
 
-            if (!response.ok) throw new Error(`HTTP 오류: ${response.status}`);
+        // 특정 셀 (A1) 데이터 가져오기
+        const cellValue = rows[0][0]; // A1은 첫 번째 행(인덱스 0)의 첫 번째 열(인덱스 0)
 
-            const text = await response.text();
-            let lines = text.split("\n").map(line => line.trim()); // 앞뒤 공백 제거
-
-            // ✅ 1. '업데이트시간' 같은 불필요한 문구 제거
-            const filteredLines = lines.filter(line => 
-                line &&  // 빈 줄 제거
-                !line.includes("업데이트시간") &&
-                !line.includes("Google Sheets에서 게시") &&
-                !line.includes("악용사례 신고") &&
-                !line.includes("자동으로 업데이트")
-            );
-
-            // ✅ 2. 중복 데이터 제거 (Set 활용)
-            const uniqueLines = [...new Set(filteredLines)];
-
-            // ✅ 3. 정확한 출력 형식 유지
-            const finalText = uniqueLines.join("<br>"); // `<br>`로 줄바꿈 적용
-
-            console.log("📌 최종 출력 데이터:", finalText);
-
-            const textbox = document.querySelector(".textbox");
-            if (textbox) {
-                textbox.innerHTML = finalText; // 원하는 형식 유지
-            } else {
-                console.error("❌ 'textbox' 요소를 찾을 수 없습니다.");
-            }
-        } catch (error) {
-            console.error("❌ 데이터 불러오기 실패:", error);
-        }
+        // 📌 'textbox' div에 업데이트 정보 표시
+        document.querySelector(".textbox").innerText = cellValue;
     }
 
     let map;
