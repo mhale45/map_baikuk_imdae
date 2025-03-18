@@ -295,11 +295,6 @@
         }
     }
 
-    // ✅ DOM이 완전히 로드된 후 실행
-    window.onload = function() {
-        getCellValue();
-    };
-
     let map;
     let markers = [];
     let overlays = [];
@@ -731,6 +726,7 @@
 
     // ✅ 초기 지도 로드
     window.onload = function() {
+        getCellValue();
         let savedData = localStorage.getItem("currentData") || "df_bugisa.json";
         setCurrentData("df_bugisa.json");
         initMap();
