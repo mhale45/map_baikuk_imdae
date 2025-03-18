@@ -273,19 +273,43 @@
 </html>
 <script>
     async function getCellValue() {
-        const sheetURL = "https://docs.google.com/spreadsheets/d/1f1urapy7S5buKKuHxgaVAc4ZbjndZvfCsiovAwwkB4g/gviz/tq?tqx=out:csv"; // ✅ 올바른 CSV URL
-        const response = await fetch(sheetURL);
-        const text = await response.text();
-        
-        // CSV 데이터를 배열로 변환
-        const rows = text.split("\n").map(row => row.split(","));
+        try {
+            const sheetURL = "https://docs.google.com/spreadsheets/d/1f1urapy7S5buKKuHxgaVAc4ZbjndZvfCsiovAwwkB4g/gviz/tq?tqx=out:csv"; // ✅ 올바른 CSV URL
+            const response = await fetch(sheetURL);
 
-        // 특정 셀 (A1) 데이터 가져오기
-        const cellValue = rows[0][0]; // A1은 첫 번째 행(인덱스 0)의 첫 번째 열(인덱스 0)
+            if (!response.ok) throw new Error(`HTTP 오류: ${response.status}`);
 
-        // 📌 'textbox' div에 업데이트 정보 표시
-        document.querySelector(".textbox").innerText = cellValue;
+            const text = await response.text();
+
+            // ✅ CSV 데이터를 배열로 변환
+            const rows = text.split("\n").map(row => row.split(","));
+
+            // ✅ B1 셀 (첫 번째 행의 두 번째 열) 데이터 가져오기
+            if (rows.length > 0 && rows[0].length > 1) {
+                const cellValue = rows[0][1].trim(); // B1 데이터
+                const formattedText = cellValue.replace(/\\n/g, "<br>"); // 줄바꿈 유지
+
+                console.log("📌 최종 출력 데이터:", formattedText);
+
+                const textbox = document.querySelector(".textbox");
+                if (textbox) {
+                    textbox.innerHTML = formattedText;
+                } else {
+                    console.error("❌ 'textbox' 요소를 찾을 수 없습니다.");
+                }
+            } else {
+                console.error("❌ B1 셀을 찾을 수 없습니다.");
+            }
+        } catch (error) {
+            console.error("❌ 데이터 불러오기 실패:", error);
+        }
     }
+
+    // ✅ DOM이 완전히 로드된 후 실행
+    window.onload = function() {
+        getCellValue();
+    };
+
 
     let map;
     let markers = [];
