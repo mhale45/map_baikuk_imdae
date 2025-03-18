@@ -283,8 +283,10 @@
             // ✅ CSV 데이터를 배열로 변환
             const rows = text.split("\n").map(row => row.split(","));
 
-            // ✅ A열 (각 행의 첫 번째 값) 데이터 가져오기
-            const columnAValues = rows.map(row => row[0]?.trim()).filter(value => value);
+            // ✅ A열 (각 행의 첫 번째 값) 데이터 가져오기 (큰따옴표 제거)
+            const columnAValues = rows
+                .map(row => row[0]?.trim().replace(/"/g, "")) // 🔹 큰따옴표 제거
+                .filter(value => value); // 빈 값 제거
 
             // ✅ 줄바꿈 유지하여 HTML에 표시
             const finalText = columnAValues.join("<br>");
