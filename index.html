@@ -14,13 +14,29 @@
             position: absolute;
             top: 10px;
             left: 10px;
-            /* background: rgba(0, 0, 0, 0); */
-            color: black; /* 텍스트 색상 */
+            background: rgba(0, 0, 0, 0.6);
+            color: white; /* 텍스트 색상 */
             padding: 10px 10px;
             border-radius: 10px; /* 둥근 모서리 */
             font-size: 13px;
             width: 250px;
             z-index: 1000; /* ✅ 지도보다 위에 표시되도록 설정 */
+        }
+        /* 업데이트기록 버튼 스타일 */
+        #toggleTextBox {
+            position: absolute;
+            top: 20px;
+            left: 290px;
+            padding: 10px 15px;
+            background-color: #007bff; /* 파란색 */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
         }
         .info-window-one {
             font-size: 13px !important; /* 🔹 글자 크기 설정 */
@@ -235,6 +251,7 @@
     <div id="map-container" style="display: none;">
     <h2></h2>
     <div id="map"></div>
+        <button id="toggleTextBox">업데이트기록 열기</button>
         <div class="textbox"></div>
         <div id="filter-container">
             <label id="filter-label">보증금</label>
@@ -271,6 +288,18 @@
 </body>
 </html>
 <script>
+     // ✅ "업데이트기록" 버튼 클릭 시 텍스트박스 열기/닫기
+     document.getElementById("toggleTextBox").addEventListener("click", function() {
+            const textbox = document.querySelector(".textbox");
+            if (textbox.style.display === "none" || textbox.style.display === "") {
+                textbox.style.display = "block"; // 텍스트박스 표시
+                this.textContent = "업데이트기록 닫기"; // 버튼 텍스트 변경
+            } else {
+                textbox.style.display = "none"; // 텍스트박스 숨기기
+                this.textContent = "업데이트기록 열기"; // 버튼 텍스트 변경
+            }
+        });
+        
     async function getCellValue() {
         try {
             const sheetURL = "https://docs.google.com/spreadsheets/d/1f1urapy7S5buKKuHxgaVAc4ZbjndZvfCsiovAwwkB4g/gviz/tq?tqx=out:csv"; // ✅ 올바른 CSV URL
