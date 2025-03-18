@@ -273,22 +273,32 @@
 </html>
 <script>
     async function getCellValue() {
-        const sheetURL = "https://docs.google.com/spreadsheets/d/1f1urapy7S5buKKuHxgaVAc4ZbjndZvfCsiovAwwkB4g/pub?output=csv";
-        const response = await fetch(sheetURL);
-        const text = await response.text();
-        
-        // CSV 데이터를 배열로 변환
-        const rows = text.split("\n").map(row => row.split(","));
+        try {
+            const sheetURL = "https://docs.google.com/spreadsheets/d/e/1f1urapy7S5buKKuHxgaVAc4ZbjndZvfCsiovAwwkB4g/pub?output=csv";
+            const response = await fetch(sheetURL);
 
-        // 특정 셀 (A1) 데이터 가져오기
-        const cellValue = rows[0][0]; // A1은 첫 번째 행(인덱스 0)의 첫 번째 열(인덱스 0)
+            if (!response.ok) throw new Error(`HTTP 오류: ${response.status}`);
 
-        // 📌 'textbox' div에 업데이트 정보 표시
-        document.querySelector(".textbox").innerText = cellValue;
+            const text = await response.text();
+            const formattedText = text.split("\n").join("<br>"); // 줄바꿈을 `<br>` 태그로 변환
+
+            console.log("📌 전체 데이터:", formattedText);
+
+            const textbox = document.querySelector(".textbox");
+            if (textbox) {
+                textbox.innerHTML = formattedText; // 모든 줄을 줄바꿈 포함하여 표시
+            } else {
+                console.error("❌ 'textbox' 요소를 찾을 수 없습니다.");
+            }
+        } catch (error) {
+            console.error("❌ 데이터 불러오기 실패:", error);
+        }
     }
 
-    // 📌 업데이트 정보 불러오기 실행
-    getCellValue();
+    // ✅ DOM이 완전히 로드된 후 실행
+    window.onload = function() {
+        getCellValue();
+    };
 
     let map;
     let markers = [];
