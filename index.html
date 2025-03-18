@@ -280,10 +280,10 @@
             if (!response.ok) throw new Error(`HTTP 오류: ${response.status}`);
 
             const text = await response.text();
-            const formattedText = text.split("\n").join("<br>"); // 줄바꿈을 `<br>` 태그로 변환
+            const rows = text.split("\n").map(row => row.split(","));
+            console.log("📌 가져온 데이터:", rows);
 
-            console.log("📌 전체 데이터:", formattedText);
-
+            const cellValue = rows[0][0] ? rows[0][0].trim() : "데이터 없음";
             const textbox = document.querySelector(".textbox");
             if (textbox) {
                 textbox.innerHTML = formattedText; // 모든 줄을 줄바꿈 포함하여 표시
