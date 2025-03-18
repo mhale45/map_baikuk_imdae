@@ -18,9 +18,10 @@
             color: white; /* 텍스트 색상 */
             padding: 10px 10px;
             border-radius: 10px; /* 둥근 모서리 */
-            font-size: 13px;
+            font-size: 16px;
             width: 250px;
             z-index: 1000; /* ✅ 지도보다 위에 표시되도록 설정 */
+            display: none; /* 기본적으로 닫힘 */
         }
         /* 업데이트기록 버튼 스타일 */
         #toggleTextBox {
@@ -251,7 +252,7 @@
     <div id="map-container" style="display: none;">
     <h2></h2>
     <div id="map"></div>
-        <button id="toggleTextBox">업데이트기록</button>
+        <button id="toggleTextBox">업데이트기록 열기</button>
         <div class="textbox"></div>
         <div id="filter-container">
             <label id="filter-label">보증금</label>
