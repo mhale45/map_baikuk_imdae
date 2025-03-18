@@ -12,8 +12,8 @@
         }
         .textbox {
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: 50px;
+            left: 20px;
             background: rgba(0, 0, 0, 0.6);
             color: white; /* 텍스트 색상 */
             padding: 10px 10px;
@@ -26,14 +26,14 @@
         #toggleTextBox {
             position: absolute;
             top: 20px;
-            left: 290px;
-            padding: 10px 15px;
+            left: 20px;
+            padding: 5px 10px;
             background-color: #007bff; /* 파란색 */
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: bold;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
             z-index: 1000;
@@ -251,7 +251,7 @@
     <div id="map-container" style="display: none;">
     <h2></h2>
     <div id="map"></div>
-        <button id="toggleTextBox">업데이트기록 열기</button>
+        <button id="toggleTextBox">업데이트기록</button>
         <div class="textbox"></div>
         <div id="filter-container">
             <label id="filter-label">보증금</label>
@@ -299,7 +299,7 @@
                 this.textContent = "업데이트기록 열기"; // 버튼 텍스트 변경
             }
         });
-        
+
     async function getCellValue() {
         try {
             const sheetURL = "https://docs.google.com/spreadsheets/d/1f1urapy7S5buKKuHxgaVAc4ZbjndZvfCsiovAwwkB4g/gviz/tq?tqx=out:csv"; // ✅ 올바른 CSV URL
