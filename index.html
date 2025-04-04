@@ -47,7 +47,7 @@
             max-width: 600px !important; /* 🔹 최대 너비 설정 */
             word-wrap: break-word !important; /* 🔹 긴 단어가 있으면 자동으로 줄바꿈 */
             overflow-wrap: break-word !important; /* 🔹 공백이 없어도 강제 줄바꿈 */
-            overflow-x: auto !important; /* 🔹 가로 스크롤 */
+            /* overflow-x: auto !important; 🔹 가로 스크롤 */
             white-space: nowrap !important; /* 🔹 자동 줄바꿈 방지 (공백이 있어도 줄바꿈되지 않음) */
             text-align: left !important; /* 🔹 텍스트 정렬을 왼쪽으로 설정 */
             pointer-events: none !important; /* 터치 및 클릭 비활성화 */
@@ -534,7 +534,23 @@
                 content: `<div class="${infoWindowClass}" style="padding:5px;">${item.지도내용}</div>`
             });
 
-            let overlayContent = `<div class="custom-overlay">${item.대표주소}</div>`;
+            let overlayContent = `
+                <div class="custom-overlay">
+                    <span class="address-text" 
+                        style="text-decoration: underline; cursor: pointer;"
+                        data-address="${item.대표주소}">
+                    ${item.대표주소}
+                    </span>
+                    <span style="margin: 0 5px;">|</span>
+                    <a href="https://new.land.naver.com/offices?ms=${item.위도},${item.경도},19&a=SG:SMS:GJCG:APTHGJ:GM:TJ&b=B2&e=RETAIL&ad=true" 
+                        target="_blank" 
+                        style="vertical-align: middle;">
+                        <img src="https://raw.githubusercontent.com/mhale45/image/main/naver_land_icon.png" 
+                            alt="네이버 부동산" 
+                            style="width: 16px; height: 16px; vertical-align: middle; cursor: pointer;" />
+                    </a>
+                </div>
+                `;
             let overlay = new kakao.maps.CustomOverlay({
                 content: overlayContent,
                 position: marker.getPosition()
@@ -700,35 +716,25 @@
 
     // ✅ '.custom-overlay' 클릭 시 동작 추가
     document.addEventListener("click", function (event) {
-        if (event.target.classList.contains("custom-overlay")) {
-            var clickedAddress = event.target.textContent.trim(); // 클릭한 오버레이의 텍스트 (주소)
+        if (event.target.classList.contains("address-text")) {
+            const clickedAddress = event.target.getAttribute("data-address");
 
-            // ✅ JSON 데이터에서 대표주소와 매칭되는 값 찾기
-            var matchedItem = markers.find((marker, index) => {
+            const matchedItem = markers.find((marker, index) => {
                 return overlays[index].getContent().includes(clickedAddress);
             });
 
             if (matchedItem) {
-                var index = markers.indexOf(matchedItem);
-                var latitude = markers[index].getPosition().getLat(); // ✅ 위도 가져오기
-                var longitude = markers[index].getPosition().getLng(); // ✅ 경도 가져오기
+                const index = markers.indexOf(matchedItem);
+                const lat = markers[index].getPosition().getLat();
+                const lng = markers[index].getPosition().getLng();
 
-                let searchURL;
+                let searchURL = `https://map.naver.com/v5/search/${encodeURIComponent(clickedAddress)}`;
 
-                // ✅ '광고' 모드(df_naver.json)일 때 다른 링크로 연결
-                if (currentData === "df_naver.json") {
-                    searchURL = `https://new.land.naver.com/offices?ms=${latitude},${longitude},19&a=SG:SMS:GJCG:APTHGJ:GM:TJ&b=B2&e=RETAIL&ad=true`;
-                } else {
-                    let encodedQuery = encodeURIComponent(clickedAddress); // URL 인코딩
-                    searchURL = `https://map.naver.com/v5/search/${encodedQuery}`; // 네이버 지도 검색 URL
-                }
-
-                window.open(searchURL, "_blank"); // 새 창(또는 새 탭)에서 열기
-            } else {
-                console.error("❌ 대표주소를 찾을 수 없습니다.");
+                window.open(searchURL, "_blank");
             }
         }
     });
+
 
     document.getElementById("filterSearch").addEventListener("click", function() {
         var filterContainer = document.getElementById("filter-container");
