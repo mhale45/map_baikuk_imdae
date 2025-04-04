@@ -79,7 +79,7 @@
         }
         .custom-overlay {
             position: absolute;
-            bottom: 1px; /* ✅ 오버레이 위치 조정 */            
+            margin-left: 10px; /* 오른쪽으로 10px 이동 */       
             background: rgba(255, 255, 255, 1);
             border-radius: 5px;
             font-size: 13px;
@@ -549,9 +549,7 @@
                 `;
             let overlay = new kakao.maps.CustomOverlay({
                 content: overlayContent,
-                position: marker.getPosition(),
-                xAnchor: 0,  // 🔹 가로 기준 가운데 정렬
-                yAnchor: 1.0   // 🔹 세로 기준 아래쪽 (마커 위에 붙게 됨)
+                position: marker.getPosition()
             });
 
             isOpenStates[index] = false; // 초기 상태는 닫힘
